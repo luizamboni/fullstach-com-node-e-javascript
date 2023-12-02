@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNO Game Representation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .player-hand {
+            display: flex;
+            justify-content: center;
+            min-height: 150px;
+        }
+
+        .player-hand.current .card {
+            opacity: 1;
+        }
+
+        .deck-section .card {
+            opacity: 1;
+        }
+ 
+        .card {
+            width: 90px;
+            height: 130px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.5em;
+            vertical-align: top;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            opacity: 1; /* cartas do oponente são ocultas por padrão */
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .red { background-color: #ff5555; color: white; }
+        .yellow { background-color: #ffea00; color: black; }
+        .green { background-color: #28a745; color: white; }
+        .blue { background-color: #007bff; color: white; }
+        
+        .number {
+            display: block;
+            margin-top: 45px;
+        }
+
+        .deck-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .deck-card, .played-card {
+            margin: 10px;
+            transform: rotate(-10deg); /* inclinação para dar efeito */
+            position: absolute;
+        }
+
+        .draw-card {
+            background: linear-gradient(45deg, #eee, #ddd);
+            left: -220px; /* ajuste para mover a pilha de compra para a esquerda */
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: center;
+        }
+
+        .draw-card.text {
+            text-align: center;
+            color: #007bff;
+            /* display: block; */
+        }
+
+        .player-hand .draw-card {
+            left: 0px;
+        }
+
+        /* Algumas rotações aleatórias para dar efeito de desorganização */
+        .played-card:nth-child(1) { transform: rotate(-15deg); left: -15px; }
+        .played-card:nth-child(2) { transform: rotate(10deg); left: 5px; }
+        .played-card:nth-child(3) { transform: rotate(-5deg); }
+    </style>
+</head>
+<body>
+
+<!-- Mão do oponente (oculta) -->
+<div class="player-hand">
+    <div class="card draw-card"></div>
+    <div class="card draw-card"></div>
+    <div class="card draw-card"></div>
+    <div class="card draw-card"></div>
+    <div class="card draw-card"></div>
+    <div class="card draw-card"></div>
+    <div class="card draw-card"></div>
+</div>
+
+<!-- Seção das pilhas -->
+<div class="deck-section" id="drop-zone">
+    <!-- Cartas jogadas desorganizadamente -->
+    <div class="card yellow played-card"><span class="number">4</span></div>
+    <div class="card red played-card"><span class="number">6</span></div>
+    <div class="card green played-card"><span class="number">3</span></div>
+
+    <!-- Carta atual jogada e pilha de compra -->
+    <div class="card draw-card"><span class="text">Draw</span></div>
+    <div class="card yellow deck-card"><span class="number">7</span></div>
+</div>
+
+
+<!-- Mão do jogador atual (revelada) -->
+<div class="player-hand current">
+    <div class="card red" draggable="true" id="card1"><span class="number">1</span></div>
+    <div class="card yellow" draggable="true" id="card2"><span class="number">2</span></div>
+    <div class="card green" draggable="true" id="card3"><span class="number">3</span></div>
+    <div class="card blue" draggable="true" id="card4"><span class="number">4</span></div>
+    <div class="card red" draggable="true" id="card5"><span class="number">5</span></div>
+    <div class="card green" draggable="true" id="card6"><span class="number">6</span></div>
+    <div class="card blue" draggable="true" id="card7"><span class="number">7</span></div>
+</div>
+
+<script>
+    // Referências para os elementos
+    const cards = document.querySelectorAll('.player-hand.current .card');
+    const dropZone = document.getElementById('drop-zone');
+
+    // Função para iniciar o arrasto
+    function handleDragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+    }
+
+    // Função para permitir o arrasto
+    function allowDrop(e) {
+        e.preventDefault();
+    }
+
+    // Função para soltar a carta
+    function handleDrop(e) {
+        e.preventDefault();
+        const cardId = e.dataTransfer.getData('text/plain');
+        const card = document.getElementById(cardId);
+
+        // Adicionar a carta à área de jogo
+        dropZone.appendChild(card);
+
+        // Ajustar o estilo e posicionamento
+        card.style.transform = 'rotate(0deg)'; // Remover a rotação
+        card.style.margin = '10px'; // Restabelecer a margem
+        card.classList.remove('played-card'); // Remover qualquer classe anterior que possa ter afetado a sua aparência
+        card.classList.add('deck-card'); // Remover qualquer classe anterior que possa ter afetado a sua aparência
+
+    }
+
+    // Adicionando os ouvintes de eventos
+    cards.forEach(card => {
+        card.addEventListener('dragstart', handleDragStart);
+    });
+
+    dropZone.addEventListener('dragover', allowDrop);
+    dropZone.addEventListener('drop', handleDrop);
+</script>
+</body>
+</html>
