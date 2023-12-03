@@ -1,0 +1,359 @@
+{
+    "id": "78980a75-3d50-4dbf-9c76-e76f086ad2b8",
+    "titulo": "helen",
+    "idsJogadores": [
+        "bb0f4a9e-0e7a-4078-ac78-cd224fa366c9",
+        "266b6133-6c6b-42aa-a229-c9e89430ea24"
+    ],
+    "vezDoJogador": 0,
+    "baralho": [
+        {
+            "numero": 0,
+            "cor": "verde"
+        },
+        {
+            "numero": 1,
+            "cor": "verde"
+        },
+        {
+            "numero": 2,
+            "cor": "verde"
+        },
+        {
+            "numero": 3,
+            "cor": "verde"
+        },
+        {
+            "numero": 4,
+            "cor": "verde"
+        },
+        {
+            "numero": 5,
+            "cor": "verde"
+        },
+        {
+            "numero": 6,
+            "cor": "verde"
+        },
+        {
+            "numero": 7,
+            "cor": "verde"
+        },
+        {
+            "numero": 8,
+            "cor": "verde"
+        },
+        {
+            "numero": 9,
+            "cor": "verde"
+        },
+        {
+            "numero": 0,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 1,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 2,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 3,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 4,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 5,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 6,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 7,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 8,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 9,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 0,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 1,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 2,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 3,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 4,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 5,
+            "cor": "vermelho"
+        }
+    ],
+    "pilha": [
+        {
+            "numero": 1,
+            "cor": "verde"
+        },
+        {
+            "numero": 9,
+            "cor": "verde"
+        },
+        {
+            "numero": 9,
+            "cor": "verde"
+        },
+        {
+            "numero": 9,
+            "cor": "verde"
+        },
+        {
+            "numero": 9,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 1,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 0,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 0,
+            "cor": "verde"
+        },
+        {
+            "numero": 0,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 7,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 2,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 8,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 2,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 4,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 4,
+            "cor": "azul"
+        },
+        {
+            "numero": 9,
+            "cor": "azul"
+        },
+        {
+            "numero": 7,
+            "cor": "azul"
+        },
+        {
+            "numero": 7,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 0,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 5,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 5,
+            "cor": "azul"
+        },
+        {
+            "numero": 8,
+            "cor": "azul"
+        },
+        {
+            "numero": 8,
+            "cor": "amarelo"
+        },
+        {
+            "numero": 8,
+            "cor": "verde"
+        },
+        {
+            "numero": 4,
+            "cor": "verde"
+        },
+        {
+            "numero": 5,
+            "cor": "verde"
+        },
+        {
+            "numero": 6,
+            "cor": "verde"
+        },
+        {
+            "numero": 6,
+            "cor": "vermelho"
+        },
+        {
+            "numero": 6,
+            "cor": "azul"
+        },
+        {
+            "numero": 0,
+            "cor": "azul"
+        },
+        {
+            "numero": 6,
+            "cor": "azul"
+        },
+        {
+            "numero": 6,
+            "cor": "vermelho"
+        }
+    ],
+    "maos": {
+        "bb0f4a9e-0e7a-4078-ac78-cd224fa366c9": [
+            {
+                "numero": 3,
+                "cor": "amarelo"
+            },
+            {
+                "numero": 3,
+                "cor": "azul"
+            },
+            {
+                "numero": 1,
+                "cor": "vermelho"
+            },
+            {
+                "numero": 2,
+                "cor": "azul"
+            },
+            {
+                "numero": 6,
+                "cor": "amarelo"
+            },
+            {
+                "numero": 7,
+                "cor": "verde"
+            },
+            {
+                "numero": 4,
+                "cor": "amarelo"
+            },
+            {
+                "numero": 1,
+                "cor": "azul"
+            },
+            {
+                "numero": 2,
+                "cor": "verde"
+            },
+            {
+                "numero": 7,
+                "cor": "amarelo"
+            },
+            {
+                "numero": 3,
+                "cor": "verde"
+            },
+            {
+                "numero": 2,
+                "cor": "amarelo"
+            },
+            {
+                "numero": 9,
+                "cor": "azul"
+            },
+            {
+                "numero": 8,
+                "cor": "azul"
+            },
+            {
+                "numero": 7,
+                "cor": "azul"
+            },
+            {
+                "numero": 5,
+                "cor": "azul"
+            },
+            {
+                "numero": 4,
+                "cor": "azul"
+            },
+            {
+                "numero": 3,
+                "cor": "azul"
+            },
+            {
+                "numero": 2,
+                "cor": "azul"
+            },
+            {
+                "numero": 1,
+                "cor": "azul"
+            },
+            {
+                "numero": 0,
+                "cor": "azul"
+            },
+            {
+                "numero": 9,
+                "cor": "vermelho"
+            }
+        ],
+        "266b6133-6c6b-42aa-a229-c9e89430ea24": [
+            {
+                "numero": 3,
+                "cor": "vermelho"
+            },
+            {
+                "numero": 5,
+                "cor": "amarelo"
+            },
+            {
+                "numero": 9,
+                "cor": "vermelho"
+            },
+            {
+                "numero": 8,
+                "cor": "vermelho"
+            },
+            {
+                "numero": 7,
+                "cor": "vermelho"
+            }
+        ]
+    }
+}

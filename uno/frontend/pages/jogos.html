@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNO - Lista de Jogos</title>
+    <script src="/uno-client.js" ></script>
+    <script src="/ui.js" ></script>
+    <link rel="stylesheet" href="/common.css">
+
+    <style>
+        .game-list {
+            margin-top: 20px;
+        }
+
+        .game {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .new-game-input {
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .create-button {
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .create-button:hover {
+            background-color: #45a049;
+        }
+
+
+        .join-button {
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .join-button:hover {
+            background-color: #45a049;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="userBar"></div>
+<div class="main">
+    <h2>Lista de Jogos UNO Disponíveis</h2>
+    <div id="game-list" class="game-list">
+        <!-- A lista de jogos será inserida aqui -->
+    </div>
+
+    <button class="create-button" onclick="abrirModal()">Criar Novo Jogo</button>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="fecharModal()">&times;</span>
+            <h3>Criar Novo Jogo</h3>
+            <input type="text" id="new-game-title" class="new-game-input" placeholder="Título do Jogo">
+            <button class="create-button" onclick="createNewGame()">Criar Jogo</button>
+        </div>
+    </div>
+</div>
+<script>
+
+    function abrirModal() {
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function fecharModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    function entrarNoJogo(idJogo) {
+        UnoClient.entrarNoJogo(idJogo).then(jogo => {
+            window.location.href = `/jogo/${jogo.id}`
+        })
+    }
+
+    function createNewGame() {
+        const titulo = document.getElementById('new-game-title').value
+        UnoClient.criarNovoJogo(titulo).then(jogoCriado => {
+            fecharModal()
+            window.location.href = `espera/${jogoCriado.id}`;
+        })
+    }
+
+    function listarJogos() {
+        UnoClient.getJogadorLogado().then(jogadorLogado => {
+
+            createUserBar(jogadorLogado.nome)
+            UnoClient.listarJogos().then(jogos => {
+                renderGames(jogos, jogadorLogado);
+
+                for (const jogo of jogos) {
+                    UnoClient.getJogador(jogo.idCriador).then(jogador => renderNaJogador(jogador, jogadorLogado))
+                }
+            })
+        })
+    }
+
+    function renderNaJogador(jogador, jogadorLogado) {
+        const nome = jogadorLogado.id === jogador.id ? "você" : jogador.nome
+
+        const elementosHTML = document.querySelectorAll(`.criado-por-${jogador.id}`)
+        for(const elementoHTML of elementosHTML.values()) {
+            elementoHTML.innerText = `criado por: ${nome}`
+        }
+    }
+
+    function renderGames(jogos=[], jogadorLogado) {
+        const jogoListElement = document.getElementById('game-list');
+        jogoListElement.innerHTML = ''
+
+        for(const jogo of jogos) {
+            const jogoElement = document.createElement('div')
+            jogoElement.classList.add('game')
+            
+            let disabled = ''
+            
+            if (jogo.estado !== UnoClient.estados.AGUARDANDO ) {
+                disabled = 'disabled'
+            }
+
+            // if (jogo.idCriador !== jogadorLogado.id || jogo.idDesafiador !== jogadorLogado.id) {
+            //     disabled = 'disabled'
+            // }
+
+            const classEstado = jogo.estado.replace(" ", "-")
+            // let estadoMensagem = s
+            const htmlEstado = `<span class="${classEstado}">${jogo.estado}</span>`
+            const htmlDoId = `<br/><small> ${jogo.id.substring(0, 8)} </small>`
+
+            jogoElement.innerHTML = `
+                <div>
+                    ${jogo.titulo} - ${htmlEstado}
+                    <br/><small class="criado-por-${jogo.idCriador}">Criado por</small>
+                </div>
+                <button 
+                    class="join-button ${disabled}" 
+                    onclick="entrarNoJogo('${jogo.id}')" 
+                    ${disabled}>
+                    Entrar
+                </button>
+            `
+
+            jogoListElement.appendChild(jogoElement);
+        }
+    }
+
+
+
+    listarJogos()
+
+    setInterval(listarJogos, 30 * 1000)
+
+
+
+
+</script>
+
+</body>
+</html>

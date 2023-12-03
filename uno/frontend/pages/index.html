@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNO - Entrada</title>
+    <script src="/uno-client.js" ></script>
+    <link rel="stylesheet" href="/common.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .welcome-screen {
+            text-align: center;
+        }
+
+        .welcome-screen h1 {
+            margin-bottom: 20px;
+        }
+
+        .name-input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .start-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .start-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-screen">
+        <h1>Bem-vindo ao Jogo UNO!</h1>
+        <input type="text" class="name-input" placeholder="Digite seu nome" id="player-name">
+        <button class="start-button" onclick="startGame()">Iniciar Jogo</button>
+    </div>
+
+    <script>
+        function startGame() {
+            const nomeDoJogador = document.getElementById('player-name').value;
+            if (nomeDoJogador.trim() === '') {
+                alert('Por favor, insira um nome.');
+                return;
+            }
+
+            UnoClient.setNomeJogador(nomeDoJogador).then(() => {
+                window.location.href = 'jogos';
+            })
+        }
+    </script>
+</body>
+</html>
