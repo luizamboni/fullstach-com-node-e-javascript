@@ -7,10 +7,11 @@ const baralho = []
 for (const cor of cores) {
     for (const numero of numeros) {
         // Helena dicinario nao esta armazenado em uma variavel. Isso e estranho para um iniciante.
-        baralho.push({
+        const carta = {
             numero: numero,
             cor: cor
-        })
+        }
+        baralho.push(carta)
     }
 }
 

@@ -6,87 +6,31 @@
     <title>UNO - Aguardando Jogador</title>
     <script src="/uno-client.js" ></script>
     <link rel="stylesheet" href="/common.css">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-
-        .waiting-screen {
-            max-width: 300px;
-        }
-
-        .spinner {
-            margin: 20px auto;
-            width: 50px;
-            height: 40px;
-            text-align: center;
-            font-size: 10px;
-        }
-
-        .spinner > div {
-            background-color: #007bff;
-            height: 100%;
-            width: 6px;
-            display: inline-block;
-            animation: stretchdelay 1.2s infinite ease-in-out;
-        }
-
-        .spinner .rect2 {
-            animation-delay: -1.1s;
-        }
-
-        .spinner .rect3 {
-            animation-delay: -1.0s;
-        }
-
-        .spinner .rect4 {
-            animation-delay: -0.9s;
-        }
-
-        .spinner .rect5 {
-            animation-delay: -0.8s;
-        }
-
-        @keyframes stretchdelay {
-            0%, 40%, 100% { transform: scaleY(0.4); }
-            20% { transform: scaleY(1.0); }
-        }
-    </style>
 </head>
-<body>
-
-<div class="waiting-screen">
-    <h2>Aguardando Outro Jogador...</h2>
-    <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
+<body class="espera">
+    <div class="waiting-screen">
+        <h2>Aguardando Outro Jogador...</h2>
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+        <p>Por favor, aguarde enquanto outro jogador se junta à partida.</p>
     </div>
-    <p>Por favor, aguarde enquanto outro jogador se junta à partida.</p>
-</div>
-<script>
-    const inicioDaEspera = new Date().toJSON()
+    <script>
+        const inicioDaEspera = new Date().toJSON()
 
-    setInterval(() => {
-        const currentUrl = window.location.href;
-        const idJogo = currentUrl.split("/").reverse()[0]
-        UnoClient.getEstadoDoJogo(idJogo, inicioDaEspera).then(jogo => {
-            if (jogo.estado !== UnoClient.estados.AGUARDANDO) {
-                window.location.href = `/jogo/${jogo.id}`;
-            }
-        })
-    }, 5000)
-</script>
-
+        setInterval(() => {
+            const currentUrl = window.location.href;
+            const idJogo = currentUrl.split("/").reverse()[0]
+            UnoClient.getEstadoDoJogo(idJogo, inicioDaEspera).then(jogo => {
+                if (jogo.estado !== UnoClient.estados.AGUARDANDO) {
+                    window.location.href = `/jogo/${jogo.id}`;
+                }
+            })
+        }, 5000)
+    </script>
 </body>
 </html>

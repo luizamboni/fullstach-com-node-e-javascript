@@ -6,106 +6,9 @@
     <title>UNO - Partida</title>
     <script src="/uno-client.js" ></script>
     <script src="/ui.js" ></script>
-
     <link rel="stylesheet" href="/common.css">
-
-    <style>
-        .main {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 100vh;
-            overflow: hidden;
-            padding: 20px 0;
-        }
-
-        .player-hand {
-            display: flex;
-            justify-content: center;
-            min-height: 150px;
-        }
-
-        .player-hand.current .card {
-            opacity: 1;
-        }
-
-        .deck-section .card {
-            opacity: 1;
-        }
- 
-        .card {
-            width: 90px;
-            height: 130px;
-            border-radius: 8px;
-            display: inline-block;
-            margin: 10px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.5em;
-            vertical-align: top;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s;
-            opacity: 1; /* cartas do oponente são ocultas por padrão */
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-        }
-
-        .vermelho { background-color: #ff5555; color: white; }
-        .amarelo { background-color: #ffea00; color: black; }
-        .verde { background-color: #28a745; color: white; }
-        .azul { background-color: #007bff; color: white; }
-        
-        .number {
-            display: block;
-            margin-top: 45px;
-        }
-
-        .deck-section {
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .deck-card, .played-card {
-            margin: 10px;
-            transform: rotate(-10deg); /* inclinação para dar efeito */
-            position: absolute;
-        }
-
-        .draw-card {
-            background: linear-gradient(45deg, #eee, #ddd);
-            left: -220px; /* ajuste para mover a pilha de compra para a esquerda */
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            justify-content: center;
-        }
-
-        .draw-card.text {
-            text-align: center;
-            color: #007bff;
-            /* display: block; */
-        }
-
-        .player-hand .draw-card {
-            left: 0px;
-        }
-
-        /* Algumas rotações aleatórias para dar efeito de desorganização */
-        .played-card:nth-child(1) { transform: rotate(-15deg); left: -15px; }
-        .played-card:nth-child(2) { transform: rotate(10deg); left: 5px; }
-        .played-card:nth-child(3) { transform: rotate(-5deg); }
-    </style>
 </head>
-<body>
+<body class="jogo">
     <div id="userBar"></div>
     <div id="modal" class="modal">
         <div class="modal-content">
@@ -113,20 +16,17 @@
             <p id="mensagem">É a sua vez</p>
         </div>
     </div>
-    <!-- Mão do oponente (oculta) -->
-    <div class="main">
-        <div class="player-hand" id="mao-oponente"></div>
+    <div id="mesa">
+        <div id="mao-oponente"></div>
 
-        <!-- Seção das pilhas -->
-        <div class="deck-section" id="drop-zone">
-            <!-- Cartas jogadas desorganizadamente -->
+        <div id="area-de-jogo">
             <div id="pilha"></div>
-            <!-- Carta atual jogada e pilha de compra -->
-            <div id="baralho" class="card draw-card"><span class="text">Draw</span></div>
+            <div id="baralho" >
+                <div class="carta virada"><span class="texto">Comprar</span></div>
+            </div>
         </div>
 
-        <!-- Mão do jogador atual (revelada) -->
-        <div class="player-hand current" id="mao-jogador"></div>
+        <div id="mao-jogador"></div>
     </div>
     <script>
         const currentUrl = window.location.href;
@@ -149,7 +49,7 @@
         function renderizarCartasDoOponente(numeroDeCartas) {
             const cartasComoHtml = []
             for (const vez of Array(numeroDeCartas)) {
-                cartasComoHtml.push(`<div class="card draw-card"></div>`)
+                cartasComoHtml.push(`<div class="carta virada"></div>`)
             }
             document.getElementById("mao-oponente").innerHTML = cartasComoHtml.join("\n")
         }
@@ -159,7 +59,7 @@
             const cartasComoHtml = []
             for (const indice in cartas) {
                 const carta = cartas[indice]
-                cartasComoHtml.push(`<div class="card ${carta.cor} played-card" draggable="true" id="card${indice}"><span class="number">${carta.numero}</span></div>`)
+                cartasComoHtml.push(`<div class="carta ${carta.cor} jogada" ><span class="numero">${carta.numero}</span></div>`)
             }
             document.getElementById("pilha").innerHTML = cartasComoHtml.join("\n")
         }
@@ -183,9 +83,8 @@
             for (const indice in cartas) {
                 const carta = cartas[indice]
                 const elementoHtmlCarta = document.createElement('div')
-                elementoHtmlCarta.id = `card${indice}`
-                elementoHtmlCarta.classList = `card ${carta.cor}`
-                elementoHtmlCarta.innerHTML = `<span class="number">${carta.numero}</span>`
+                elementoHtmlCarta.classList = `carta ${carta.cor}`
+                elementoHtmlCarta.innerHTML = `<span class="numero">${carta.numero}</span>`
 
                 maoDoJogadorElementoHtml.append(elementoHtmlCarta)
                 elementoHtmlCarta.onclick = () =>  {

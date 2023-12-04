@@ -19,7 +19,8 @@ const app = express()
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
-
+app.use(express.static('frontend/css/'))
+app.use(express.static('frontend/script/'))
 
 
 app.use(async (req, res, next) => {
@@ -42,17 +43,6 @@ app.use(async (req, res, next) => {
     
     next()
 })
-
-
-
-app.get("/:filename.js", async (req, res) => {
-    const { params: { filename }} = req
-    res.end(await fs.readFile(`./frontend/script/${filename}.js`))
-});
-app.get("/:filename.css", async (req, res) => {
-    const { params: { filename }} = req
-    res.end(await fs.readFile(`./frontend/css/${filename}.css`))
-});
 
 app.get("/", async (req, res) => {
     res.end(await fs.readFile("./frontend/pages/index.html"))
@@ -176,14 +166,7 @@ app.get("/api/play/v1/:idJogo", async (req, res) => {
 })
 
 app.post("/api/play/v1/:idJogo", async (req, res) => { 
-    /* {
-        type: "stack",
-        carta: { 
-            cor: "vermelha",
-            numero: 8,
-        }    
-    }
-    */
+
     const { params, body: event, jogador } = req
     const { idJogo } = params 
     const playJogo = await playJogoRepo.getById(idJogo)
