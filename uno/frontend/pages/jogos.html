@@ -82,16 +82,28 @@
                 
                 let disabled = ''
                 
-                if (jogo.estado !== UnoClient.estados.AGUARDANDO ) {
+                if (jogo.estado === UnoClient.estados.AGUARDANDO) {
+                    if (jogo.idCriador === jogadorLogado.id) {
+                        disabled = 'disabled'
+                    } else {
+
+                    }
+                }
+
+                if(jogo.estado === UnoClient.estados.INICIANO) {
+                    if (jogo.idCriador === jogadorLogado.id || jogo.idDesafiador === jogadorLogado.id) {
+                        disabled = ''
+                    } else {
+                        disabled = 'disabled'
+                    }
+                }
+                
+                if(jogo.estado === UnoClient.estados.TERMINADO) {
                     disabled = 'disabled'
                 }
 
-                // if (jogo.idCriador !== jogadorLogado.id || jogo.idDesafiador !== jogadorLogado.id) {
-                //     disabled = 'disabled'
-                // }
 
                 const classEstado = jogo.estado.replace(" ", "-")
-                // let estadoMensagem = s
                 const htmlEstado = `<span class="${classEstado}">${jogo.estado}</span>`
                 const htmlDoId = `<br/><small> ${jogo.id.substring(0, 8)} </small>`
 

@@ -21,7 +21,6 @@ class Jogo {
                 this.maos[idJogador] = []
             }
         }
-
     }
 
     iniciar() {

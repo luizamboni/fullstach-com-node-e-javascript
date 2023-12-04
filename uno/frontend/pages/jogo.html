@@ -13,7 +13,7 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <h3>Notificação</h3>
-            <p id="mensagem">É a sua vez</p>
+            <p id="mensagem"></p>
         </div>
     </div>
     <div id="mesa">
@@ -31,19 +31,29 @@
     <script>
         const currentUrl = window.location.href;
         const idJogo = currentUrl.split("/").reverse()[0]
+        let lastState = null
 
+        let vezDoJogador = false
         const qualquerLugarNoHtml = document.body
         const baralhoNoHtml = document.getElementById("baralho")
+        const maoDoJogadorElementoHtml = document.getElementById("mao-jogador")
+        const pilhaNoHtml = document.getElementById("pilha")
 
         UnoClient.getJogadorLogado().then(jogadorLogado => createUserBar(jogadorLogado.nome))
         
         function abrirModal(mensagem) {
-            document.getElementById("mensagem").value = mensagem
+            document.getElementById("mensagem").innerText = mensagem
             document.getElementById('modal').style.display = 'flex';
+            document.getElementById('modal').querySelector(".modal-content").classList.toggle("mostrar")
+
+            setTimeout(fecharModal, 1000)
         }
 
         function fecharModal() {
-            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modal').querySelector(".modal-content").classList.toggle("mostrar")
+            setTimeout(() => { 
+                document.getElementById('modal').style.display = 'none'; 
+            }, 900)
         }
 
         function renderizarCartasDoOponente(numeroDeCartas) {
@@ -57,11 +67,16 @@
 
         function renderizaCartasDaPilha(cartas) {
             const cartasComoHtml = []
+
+            const rotationsDegs = ["a", "b", "c"] 
+
             for (const indice in cartas) {
                 const carta = cartas[indice]
-                cartasComoHtml.push(`<div class="carta ${carta.cor} jogada" ><span class="numero">${carta.numero}</span></div>`)
+                const degIndex = Math.floor(Math.random() * rotationsDegs.length)
+                const deg = rotationsDegs[degIndex]
+                cartasComoHtml.push(`<div class="carta ${carta.cor} ${deg} jogada" ><span class="numero">${carta.numero}</span></div>`)
             }
-            document.getElementById("pilha").innerHTML = cartasComoHtml.join("\n")
+            pilhaNoHtml.innerHTML = cartasComoHtml.join("\n")
         }
 
         function jogarCarta(carta) {
@@ -77,7 +92,6 @@
         }
 
         function renderizaCartasDoJogador(cartas) {
-            const maoDoJogadorElementoHtml = document.getElementById("mao-jogador")
             maoDoJogadorElementoHtml.innerHTML = ''
            
             for (const indice in cartas) {
@@ -96,18 +110,23 @@
         qualquerLugarNoHtml.onclick = fecharModal
         baralhoNoHtml.onclick = comprarCarta
         
-        let vez = false
         function getEstadoDoJogo() {
 
-
             UnoClient.getPlayJogo(idJogo).then(play => {
+                if (!lastState) {
+                    lastState = play
+                } else if (JSON.stringify(lastState.pilha) === JSON.stringify(play.pilha)) {
+                    return
+                }
 
-                if(!vez && play.vez) {
+                lastState = play
+
+                if(!vezDoJogador && play.vez) {
                     abrirModal("É a sua vez de jogar")
-                    vez = true
+                    vezDoJogador = true
                 } 
-                if (vez && !play.vez) {
-                    vez = false
+                if (vezDoJogador && !play.vez) {
+                    vezDoJogador = false
                 }
 
                 renderizarCartasDoOponente(play.contagemDeCartasNaMaoDoOpenente)

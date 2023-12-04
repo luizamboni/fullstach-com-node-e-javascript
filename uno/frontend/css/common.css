@@ -123,12 +123,25 @@ body.index h1 {
     z-index: 1000;
 }
 
+.modal h2 {
+    margin: 0px;
+}
+.modal h3 {
+    margin: 0px;
+}
 
 .modal-content {
+    position: absolute;
+    transition: top 1.5s;
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    top: -200px;
+}
+
+.modal-content.mostrar {
+    top: 100px;
 }
 
 .close-button {
@@ -240,7 +253,6 @@ body.index h1 {
 
 .jogada {
     margin: 10px;
-    transform: rotate(-10deg); /* inclinação para dar efeito */
     position: absolute;
 }
 
@@ -255,6 +267,6 @@ body.index h1 {
     left: -220px;
 }
 
-.carta-jogada:nth-child(1) { transform: rotate(-15deg); left: -15px; }
-.carta-jogada:nth-child(2) { transform: rotate(10deg); left: 5px; }
-.carta-jogada:nth-child(3) { transform: rotate(-5deg); }
+.carta.jogada.a { transform: rotate(-15deg); left: -15px; }
+.carta.jogada.b { transform: rotate(10deg); left: 5px; }
+.carta.jogada.c { transform: rotate(-5deg); }
