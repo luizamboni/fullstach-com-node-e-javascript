@@ -13,6 +13,24 @@ function logout() {
     window.location.href = "/"
 }
 
+function abrirModal(mensagem, fecharEmSegundos) {
+    if (mensagem) {
+        document.getElementById("mensagem").innerText = mensagem
+    }
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('modal').querySelector(".modal-content").classList.toggle("mostrar")
+    if (fecharEmSegundos) {
+        setTimeout(fecharModal, fecharEmSegundos * 1000)
+    }
+}
+
+function fecharModal() {
+    document.getElementById('modal').querySelector(".modal-content").classList.toggle("mostrar")
+    setTimeout(() => { 
+        document.getElementById('modal').style.display = 'none'; 
+    }, 900)
+}
+
 
 function createErrorOverlay(message, href) {
 

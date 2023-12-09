@@ -94,38 +94,50 @@ app.get("/v1/jogos", async (req, res) => {
 app.post("/v1/jogos", async (req, res) => {
     const { body, jogador } = req
     const { titulo } = body
-    const jogo = new Jogo({ idJogador: jogador.id, titulo })
-
-    await jogoRepo.save(jogo)
-    res.json(jogo)
+    try {
+        const jogo = new Jogo({ idJogador: jogador.id, titulo })
+        await jogoRepo.save(jogo)
+        res.json(jogo)
+    } catch(err) {
+        return res.status(400).json({ message: err.message })
+    }
 });
 
 app.put("/v1/jogos/:idJogo", async (req, res) => {
     const { params, jogador } = req
     const { idJogo } = params 
-    const jogo = await jogoRepo.getById(idJogo)
-    jogo.entrar(jogador.id)
-    await jogoRepo.save(jogo)
-    res.json(jogo)
-});
+    try {
+
+        const jogo = await jogoRepo.getById(idJogo)
+        jogo.entrar(jogador.id)
+        await jogoRepo.save(jogo)
+        res.json(jogo)
+    } catch(err) {
+        return res.status(400).json({ message: err.message })
+    }
+})
 
 app.get("/v1/jogos/:idJogo", async (req, res) => {
     const { params, query } = req
     const { idJogo } = params 
     const { inicioDaEspera } = query
 
-    const jogo = await jogoRepo.getById(idJogo)
-    // if (jogo.estado === Jogo.estados.AGUARDANDO) {
-    //     const inicio = new Date(inicioDaEspera)
-    //     const agora = new Date()
-    //     const minutosPassados = Math.ceil((agora - inicio)/1000/60)
-
-    //     if (minutosPassados >= 1) {
-    //         jogo.estado = Jogo.estados.INICIADO
-    //         jogoRepo.save(jogo)
-    //     }
-    // }
-    res.json(jogo)
+    try {
+        const jogo = await jogoRepo.getById(idJogo)
+        // if (jogo.estado === Jogo.estados.AGUARDANDO) {
+        //     const inicio = new Date(inicioDaEspera)
+        //     const agora = new Date()
+        //     const minutosPassados = Math.ceil((agora - inicio)/1000/60)
+    
+        //     if (minutosPassados >= 1) {
+        //         jogo.estado = Jogo.estados.INICIADO
+        //         jogoRepo.save(jogo)
+        //     }
+        // }
+        res.json(jogo)
+    } catch(err) {
+        return res.status(400).json({ message: err.message })
+    }
 })
 
 

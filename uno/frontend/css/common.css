@@ -267,6 +267,19 @@ body.index h1 {
     left: -220px;
 }
 
+#timer {
+    color: white;
+    background: green;
+    padding: 15px;
+    font-size: 14px;
+    transition: opaticy 0.2s;
+    opacity: 0;
+}
+
+#timer.mostrar {
+    opacity: 1;
+}
+
 .carta.jogada.a { transform: rotate(-15deg); left: -15px; }
 .carta.jogada.b { transform: rotate(10deg); left: 5px; }
 .carta.jogada.c { transform: rotate(-5deg); }
