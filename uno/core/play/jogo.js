@@ -5,14 +5,14 @@ const NaoEAVezDoJogador = new Error("Não é a vez do jogador")
 const CartaNaoDaMatch = new Error("A carta não da match com o topo da pilha")
 
 class Jogo {
-    constructor({ id, titulo, idsJogadores, vezDoJogador, baralho, pilha, maos }) {
+    constructor({ id, titulo, idsJogadores, vezDoJogador, baralho, pilha, maos, vencedor }) {
         this.id  = id || uuidv4()
         this.titulo = titulo
         this.idsJogadores = idsJogadores
         this.vezDoJogador = vezDoJogador || idsJogadores[0]
         this.baralho = baralho ? new Baralho(baralho) : new Baralho()
         this.pilha = pilha || []
-        this.vencedor = null
+        this.vencedor = vencedor
         
         if (maos) {
             this.maos = maos
