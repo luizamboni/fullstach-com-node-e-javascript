@@ -30,7 +30,14 @@
 
         function entrarNoJogo(idJogo) {
             UnoClient.entrarNoJogo(idJogo).then(jogo => {
-                window.location.href = `/jogo/${jogo.id}`
+                return UnoClient.getJogo(idJogo).then(jogo => {
+                    console.log(jogo)
+                    if(jogo.estado === UnoClient.estados.AGUARDANDO) {
+                        window.location.href = `/espera/${jogo.id}`
+                    } else {
+                        window.location.href = `/jogo/${jogo.id}`
+                    }
+                })
             })
         }
 
@@ -76,11 +83,7 @@
                 let disabled = ''
                 
                 if (jogo.estado === UnoClient.estados.AGUARDANDO) {
-                    if (jogo.idCriador === jogadorLogado.id) {
-                        disabled = 'disabled'
-                    } else {
-
-                    }
+      
                 }
 
                 if(jogo.estado === UnoClient.estados.INICIADO) {

@@ -40,6 +40,10 @@ const UnoClient = {
         return this._fazRequisicaoHttp("/v1/jogos")
     },
 
+    async getJogo(idJogo) {
+        return this._fazRequisicaoHttp(`/v1/jogos/${idJogo}`)
+    },
+
     async criarNovoJogo(titulo) {
         return this._fazRequisicaoHttp("/v1/jogos", { titulo }, "POST")
     },

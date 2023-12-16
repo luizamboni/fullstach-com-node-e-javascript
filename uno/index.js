@@ -91,6 +91,7 @@ app.get("/v1/jogos", async (req, res) => {
     res.json(jogos)
 });
 
+
 app.post("/v1/jogos", async (req, res) => {
     const { body, jogador } = req
     const { titulo } = body
@@ -101,6 +102,14 @@ app.post("/v1/jogos", async (req, res) => {
     } catch(err) {
         return res.status(400).json({ message: err.message })
     }
+});
+
+app.get("/v1/jogos/:idJogo", async (req, res) => {
+    const { params } = req
+    const { idJogo } = params 
+    const jogo = await jogoRepo.getById(idJogo)
+
+    res.json(jogo)
 });
 
 app.put("/v1/jogos/:idJogo", async (req, res) => {
