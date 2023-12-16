@@ -12,6 +12,7 @@ class Jogo {
         this.vezDoJogador = vezDoJogador || idsJogadores[0]
         this.baralho = baralho ? new Baralho(baralho) : new Baralho()
         this.pilha = pilha || []
+        this.vencedor = null
         
         if (maos) {
             this.maos = maos
@@ -40,7 +41,8 @@ class Jogo {
             vez: this.vezDoJogador === idJogador,
             pilha: this.pilha,
             cartasNaMao: this.maos[idJogador],
-            contagemDeCartasNaMaoDoOpenente: this.maos[oponenteIdJogador].length
+            contagemDeCartasNaMaoDoOpenente: this.maos[oponenteIdJogador].length,
+            vencedor: this.vencedor
         }
     }
 
@@ -54,11 +56,37 @@ class Jogo {
         }
         return -1
     }
+
+    cartaDoTopo() {
+        return this.pilha.slice(-1)[0]
+    }
+
+
+    cartaPodeSerJogada(carta) {
+        const cartaDoTopo = this.cartaDoTopo()
+            
+        if (cartaDoTopo.cor !== carta.cor && cartaDoTopo.numero !== carta.numero) {
+            return false
+        }
+
+        return true
+    }
     
     mudaAVez() {
         const indice = this.idsJogadores.indexOf(this.vezDoJogador)
         this.vezDoJogador = this.idsJogadores[indice + 1] ? this.idsJogadores[indice + 1] : 0
     }
+
+    temCartasNaMao(idJogador) {
+        const { cartasNaMao } = this.visaoDoJogador(idJogador)
+
+        if (cartasNaMao.length === 0) {
+            return false
+        }
+
+        return true
+    }
+
 
     daMaoParaAPiha(idJogador, carta) {
         let { cartasNaMao, pilha } = this.visaoDoJogador(idJogador)
@@ -68,6 +96,18 @@ class Jogo {
         pilha.push(carta)
     }
 
+    eAVezDoJogador(idJogador) {
+        if (idJogador !== this.vezDoJogador) {
+            return false
+        }
+
+        return true
+    }
+
+    jogadorVence(idJogador) {
+        this.vencedor = idJogador
+    }
+
     doBaralhoParaAMao(idJogador) {
         const { cartasNaMao } = this.visaoDoJogador(idJogador)
         const carta = this.baralho.comprar()
@@ -75,18 +115,26 @@ class Jogo {
     }
 
     executarJogada(idJogador, evento) {
-        if (idJogador !== this.vezDoJogador) {
+        if (!this.eAVezDoJogador(idJogador)) {
             throw NaoEAVezDoJogador
         }
 
         const { tipo, payload } = evento
+        
         if (tipo === "jogar") {
             const carta = payload
-            const cartaDoTopo = this.pilha.slice(-1)[0]
-            if (cartaDoTopo.cor !== carta.cor && cartaDoTopo.numero !== carta.numero) {
+                        
+            if (!this.cartaPodeSerJogada(carta)) {
                 throw CartaNaoDaMatch
             }
+
             this.daMaoParaAPiha(idJogador, carta)
+            
+            if (!this.temCartasNaMao(idJogador)) {
+                this.jogadorVence(idJogador)
+                return
+            }
+
             this.mudaAVez()
         }
 
@@ -94,6 +142,9 @@ class Jogo {
             this.doBaralhoParaAMao(idJogador)
         }
 
+        if (tipo === "passar") {
+            this.mudaAVez()
+        }
     }
 }
 

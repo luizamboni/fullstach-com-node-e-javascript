@@ -61,23 +61,11 @@
 
             for (const indice in cartas) {
                 const carta = cartas[indice]
-                const degIndex = Math.floor(Math.random() * rotationsDegs.length)
+                const degIndex =  indice % rotationsDegs.length
                 const deg = rotationsDegs[degIndex]
                 cartasComoHtml.push(`<div class="carta ${carta.cor} ${deg} jogada" ><span class="numero">${carta.numero}</span></div>`)
             }
             pilhaNoHtml.innerHTML = cartasComoHtml.join("\n")
-        }
-
-        function jogarCarta(carta) {
-            UnoClient.jogarCarta(idJogo, carta).then(getEstadoDoJogo).catch(err => {
-                alert(err.message)
-            })
-        }
-        
-        function comprarCarta() {
-            UnoClient.comprarCarta(idJogo).then(getEstadoDoJogo).catch(err => {
-                alert(err.message)
-            })
         }
 
         function renderizaCartasDoJogador(cartas) {
@@ -96,6 +84,18 @@
             }
         }
 
+
+        function jogarCarta(carta) {
+            UnoClient.jogarCarta(idJogo, carta).then(getEstadoDoJogo).catch(err => {
+                alert(err.message)
+            })
+        }
+        
+        function comprarCarta() {
+            UnoClient.comprarCarta(idJogo).then(getEstadoDoJogo).catch(err => {
+                alert(err.message)
+            })
+        }
         
         qualquerLugarNoHtml.onclick = fecharModal
         baralhoNoHtml.onclick = comprarCarta
@@ -113,8 +113,6 @@
             UnoClient.getPlayJogo(idJogo).then(play => {
                 if (!lastState) {
                     lastState = play
-                } else if (JSON.stringify(lastState.pilha) === JSON.stringify(play.pilha)) {
-                    return
                 }
 
                 lastState = play

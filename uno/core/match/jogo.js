@@ -27,17 +27,34 @@ class Jogo {
         }
     }
 
-    entrar(idJogador) {
+    _jogadorEstaNoJogo(idJogador) {
+        console.log(idJogador, this.idCriador, this.idDesafiador)
+        if(this.idCriador === idJogador) {
+            return true
+        }
+
+        if(this.idDesafiador === idJogador) {
+            return true
+        }
+
+        return false
+    }
+
+    aceitar(idJogador) {
+        if (this._jogadorEstaNoJogo(idJogador)) {
+            return
+        }
+    
         if(this.estado !== estados.AGUARDANDO) {
             throw Error(`O jogo ${this.titulo} não está mais disponível`)
         }
 
-        if(this.idCriador === idJogador) {
-            throw Error(`O jogador não pode jogar contra ele mesmo`)
-        }
-
         this.idDesafiador = idJogador
         this.estado = estados.INICIADO
+    }
+
+    encerrar() {
+        this.estado = estados.TERMINADO
     }
 }
 

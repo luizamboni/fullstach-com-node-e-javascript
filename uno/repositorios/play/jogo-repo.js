@@ -23,6 +23,7 @@ class JogoRepo {
             baralho: data.baralho,
             pilha: data.pilha,
             maos: data.maos,
+            vencedor: data.vencedor,
         })
 
         return jogo
@@ -50,6 +51,7 @@ class JogoRepo {
                 baralho: jogo.baralho,
                 pilha: jogo.pilha,
                 maos: jogo.maos,
+                vencedor: jogo.vencedor,
             }, null, 4)
         )
     }

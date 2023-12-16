@@ -109,7 +109,7 @@ app.put("/v1/jogos/:idJogo", async (req, res) => {
     try {
 
         const jogo = await jogoRepo.getById(idJogo)
-        jogo.entrar(jogador.id)
+        jogo.aceitar(jogador.id)
         await jogoRepo.save(jogo)
         res.json(jogo)
     } catch(err) {
@@ -153,7 +153,6 @@ app.get("/api/play/v1/:idJogo", async (req, res) => {
 
     } catch(err) {
 
-        console.log(err)
         try {
             const jogo = await jogoRepo.getById(idJogo)    
 
@@ -185,6 +184,11 @@ app.post("/api/play/v1/:idJogo", async (req, res) => {
     try {
         playJogo.executarJogada(jogador.id, event)
         playJogoRepo.save(playJogo)
+        if (playJogo.vencedor) {
+            const jogo = await jogoRepo.getById(idJogo)
+            jogo.encerrar()
+            jogoRepo.save(jogo)
+        }
     } catch(err) {
         return res.status(400).json({ message: err.message })
     }
