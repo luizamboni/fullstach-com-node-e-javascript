@@ -38,6 +38,7 @@ class Jogo {
         const oponenteIdJogador = this.idsJogadores.find(id => id !== idJogador)
         
         return {
+            titulo: this.titulo,
             vez: this.vezDoJogador === idJogador,
             pilha: this.pilha,
             cartasNaMao: this.maos[idJogador],
@@ -57,13 +58,13 @@ class Jogo {
         return -1
     }
 
-    cartaDoTopo() {
+    cartaDoTopoDaPilha() {
         return this.pilha.slice(-1)[0]
     }
 
 
     cartaPodeSerJogada(carta) {
-        const cartaDoTopo = this.cartaDoTopo()
+        const cartaDoTopo = this.cartaDoTopoDaPilha()
             
         if (cartaDoTopo.cor !== carta.cor && cartaDoTopo.numero !== carta.numero) {
             return false
@@ -75,6 +76,7 @@ class Jogo {
     mudaAVez() {
         const indice = this.idsJogadores.indexOf(this.vezDoJogador)
         this.vezDoJogador = this.idsJogadores[indice + 1] ? this.idsJogadores[indice + 1] : 0
+        return this.vezDoJogador
     }
 
     temCartasNaMao(idJogador) {
@@ -112,6 +114,7 @@ class Jogo {
         const { cartasNaMao } = this.visaoDoJogador(idJogador)
         const carta = this.baralho.comprar()
         cartasNaMao.push(carta)
+        return carta
     }
 
     executarJogada(idJogador, evento) {
@@ -132,19 +135,32 @@ class Jogo {
             
             if (!this.temCartasNaMao(idJogador)) {
                 this.jogadorVence(idJogador)
-                return
+                return {
+                    "vencedor": this.vencedor
+                }
             }
 
-            this.mudaAVez()
+            const vezDoJogador = this.mudaAVez()
+            return {
+                vezDoJogador,
+            }
         }
 
         if (tipo === "comprar") {
-            this.doBaralhoParaAMao(idJogador)
+            const cartaComprada = this.doBaralhoParaAMao(idJogador)
+            return {
+                cartaComprada,
+            }
         }
 
         if (tipo === "passar") {
-            this.mudaAVez()
+            const vezDoJogador = this.mudaAVez()
+            return {
+                vezDoJogador,
+            }
         }
+
+        return {}
     }
 }
 

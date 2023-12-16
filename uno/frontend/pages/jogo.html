@@ -30,11 +30,11 @@
     </div>
     <div id="timer" >Sua vez termina em <span class="numero">60</span> segundos</div>
     <script>
+        let lastState = null
+        let vezDoJogador = false
         const currentUrl = window.location.href;
         const idJogo = currentUrl.split("/").reverse()[0]
-        let lastState = null
 
-        let vezDoJogador = false
         const qualquerLugarNoHtml = document.body
         const baralhoNoHtml = document.getElementById("baralho")
         const maoDoJogadorElementoHtml = document.getElementById("mao-jogador")
@@ -43,7 +43,11 @@
         const pilhaNoHtml = document.getElementById("pilha")
         const timerNoHtml = document.getElementById("timer")
 
-        UnoClient.getJogadorLogado().then(jogadorLogado => createUserBar(jogadorLogado.nome))
+        UnoClient.getJogadorLogado().then(jogadorLogado => {
+            UnoClient.getPlayJogo(idJogo).then(play => {
+                createUserBar(`${jogadorLogado.nome}`, `<small> - ${play.titulo}</small>`)
+            })
+        })
         
         function renderizarCartasDoOponente(numeroDeCartas) {
             const cartasComoHtml = []
@@ -63,7 +67,11 @@
                 const carta = cartas[indice]
                 const degIndex =  indice % rotationsDegs.length
                 const deg = rotationsDegs[degIndex]
-                cartasComoHtml.push(`<div class="carta ${carta.cor} ${deg} jogada" ><span class="numero">${carta.numero}</span></div>`)
+                cartasComoHtml.push(`
+                <div class="carta ${carta.cor} ${deg} jogada" >
+                    <span class="numero">${carta.numero}</span>
+                </div>
+                `)
             }
             pilhaNoHtml.innerHTML = cartasComoHtml.join("\n")
         }
@@ -97,21 +105,56 @@
                 alert(err.message)
             })
         }
+
+        function passarAVezEFecharModal() {
+            passarAVez()
+            fecharModal()
+        }
         
         function comprarCarta() {
-            UnoClient.comprarCarta(idJogo).then(getEstadoDoJogo).catch(err => {
+            UnoClient.comprarCarta(idJogo).then(event => { 
+                tempoRestanteEmSegudos = 60
+                const { cartaComprada } = event
+                const { pilha } = lastState
+                const cartaDoTopo = pilha.slice(-1)[0]
+
+                let jogarDisabledPropriedade = 'disabled'
+                if (cartaDoTopo.cor === cartaComprada.cor || cartaDoTopo.numero === cartaComprada.numero) {
+                    jogarDisabledPropriedade = ''
+                }
+                const elementoHtmlCarta = `
+                <div id="pos-compra">
+                <div class="carta ${cartaComprada.cor}">
+                    <span class="numero">${cartaComprada.numero}</span>
+                </div>
+                <div class="t1">
+                    <button id="passar-a-vez-pos-compra" class="regular-button" >passar</button>
+                    <button id="jogar-pos-compra" class="regular-button ${jogarDisabledPropriedade}" ${jogarDisabledPropriedade}>jogar</button>
+                </div>
+                </div>
+                `
+                abrirModal(elementoHtmlCarta)
+
+                document.querySelector("#passar-a-vez-pos-compra").onclick = passarAVezEFecharModal
+                document.querySelector("#jogar-pos-compra").onclick = function () {
+                    jogarCarta(cartaComprada)
+                    fecharModal()
+                }
+
+                getEstadoDoJogo() 
+            }).catch(err => {
                 alert(err.message)
             })
         }
         
-        qualquerLugarNoHtml.onclick = fecharModal
+        // qualquerLugarNoHtml.onclick = fecharModal
         baralhoNoHtml.onclick = comprarCarta
 
         const limiteDeTempoPorVez = 60
         let tempoRestanteEmSegudos = limiteDeTempoPorVez
         let timerDaVez = setInterval(function() {
             tempoRestanteEmSegudos--
-            if (tempoRestanteEmSegudos <= 0) {
+            if (tempoRestanteEmSegudos <= 1) {
                 if (vezDoJogador) {
                     passarAVez()
                 }

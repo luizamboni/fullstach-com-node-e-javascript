@@ -1,9 +1,10 @@
-function createUserBar(userName) {
+function createUserBar(userName, contextText) {
     const userBarDiv = document.getElementById('userBar');
 
     userBarDiv.className = 'user-bar';
+    
     userBarDiv.innerHTML = `
-        <span class="user-name">${userName}</span>
+        <span class="user-name">${userName}${contextText || ''}</span>
         <button class="logout-button" onclick="logout()">Deslogar</button>
     `;
 }
@@ -15,7 +16,7 @@ function logout() {
 
 function abrirModal(mensagem, fecharEmSegundos) {
     if (mensagem) {
-        document.getElementById("mensagem").innerText = mensagem
+        document.getElementById("mensagem").innerHTML = mensagem
     }
     document.getElementById('modal').style.display = 'flex';
     document.getElementById('modal').querySelector(".modal-content").classList.toggle("mostrar")

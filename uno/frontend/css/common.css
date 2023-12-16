@@ -46,8 +46,12 @@ body.index h1 {
     align-items: center;
 }
 
+.t0 {
+    margin-top: 10px;
+}
+
 .t1 {
-    margin-top: 20px,
+    margin-top: 20px;
 }
 
 .regular-input {
@@ -215,6 +219,12 @@ body.index h1 {
     display: flex;
     justify-content: center;
     min-height: 150px;
+}
+
+#pos-compra {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .carta {

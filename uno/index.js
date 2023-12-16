@@ -187,23 +187,24 @@ app.get("/api/play/v1/:idJogo", async (req, res) => {
 
 app.post("/api/play/v1/:idJogo", async (req, res) => { 
 
-    const { params, body: event, jogador } = req
+    const { params, body: eventoRecebido, jogador } = req
     const { idJogo } = params 
     const playJogo = await playJogoRepo.getById(idJogo)
     try {
-        console.log(event)
-        playJogo.executarJogada(jogador.id, event)
-        playJogoRepo.save(playJogo)
+        console.log(eventoRecebido)
+        const eventoResposta = playJogo.executarJogada(jogador.id, eventoRecebido)
+        await playJogoRepo.save(playJogo)
         if (playJogo.vencedor) {
             const jogo = await jogoRepo.getById(idJogo)
             jogo.encerrar()
-            jogoRepo.save(jogo)
+            await jogoRepo.save(jogo)
         }
+
+        return res.json(eventoResposta)
     } catch(err) {
+        console.error(err)
         return res.status(400).json({ message: err.message })
     }
-
-    res.json({})
 })
 
 
