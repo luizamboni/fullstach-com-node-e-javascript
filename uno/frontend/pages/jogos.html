@@ -31,7 +31,6 @@
         function entrarNoJogo(idJogo) {
             UnoClient.entrarNoJogo(idJogo).then(jogo => {
                 return UnoClient.getJogo(idJogo).then(jogo => {
-                    console.log(jogo)
                     if(jogo.estado === UnoClient.estados.AGUARDANDO) {
                         window.location.href = `/espera/${jogo.id}`
                     } else {

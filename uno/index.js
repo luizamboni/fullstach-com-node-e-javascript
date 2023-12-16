@@ -191,6 +191,7 @@ app.post("/api/play/v1/:idJogo", async (req, res) => {
     const { idJogo } = params 
     const playJogo = await playJogoRepo.getById(idJogo)
     try {
+        console.log(event)
         playJogo.executarJogada(jogador.id, event)
         playJogoRepo.save(playJogo)
         if (playJogo.vencedor) {

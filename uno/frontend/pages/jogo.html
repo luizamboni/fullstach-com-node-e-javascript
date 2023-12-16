@@ -84,6 +84,13 @@
             }
         }
 
+        function passarAVez() {
+            UnoClient.passarAVez(idJogo).then(() => {
+                timerNoHtml.classList.remove("mostrar")
+                vezDoJogador = false
+            })
+        }
+
 
         function jogarCarta(carta) {
             UnoClient.jogarCarta(idJogo, carta).then(getEstadoDoJogo).catch(err => {
@@ -104,6 +111,11 @@
         let tempoRestanteEmSegudos = limiteDeTempoPorVez
         let timerDaVez = setInterval(function() {
             tempoRestanteEmSegudos--
+            if (tempoRestanteEmSegudos <= 0) {
+                if (vezDoJogador) {
+                    passarAVez()
+                }
+            }
             timerNoHtml.querySelector(".numero").innerHTML = tempoRestanteEmSegudos
         }, 1000)
 

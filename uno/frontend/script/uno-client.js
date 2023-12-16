@@ -88,5 +88,16 @@ const UnoClient = {
             },
             "POST"
         )
+    },
+
+    async passarAVez(idJogo) {
+        return this._fazRequisicaoHttp(
+            `/api/play/v1/${idJogo}`, 
+            { 
+                tipo: "passar", 
+                payload: {},
+            },
+            "POST"
+        )
     }
 }
