@@ -227,6 +227,12 @@ body.index h1 {
     align-items: center;
 }
 
+#declaracao-de-vendecor{
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
 .carta {
     width: 90px;
     height: 130px;

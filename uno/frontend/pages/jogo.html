@@ -34,6 +34,7 @@
         let vezDoJogador = false
         let nomeDoJogador = null
         let nomeDoOponente = null
+        let vencedor = null
         const currentUrl = window.location.href;
         const idJogo = currentUrl.split("/").reverse()[0]
 
@@ -172,11 +173,19 @@
         function declaraVencedor(idJogador) {
             UnoClient.getJogador(idJogador).then(jogador => {
                 const elementoHtmlCarta = `
-                <div id="vencedor">
+                <div id="declaracao-de-vendecor">
                     ${jogador.nome} venceu esta partida !
-                </div>
+                    <div class="t1">
+                        <button id="voltar" class="regular-button">voltar</button>
+                    </div>
+                    </div>
                 `
                 abrirModal(elementoHtmlCarta)
+
+                document.querySelector("#declaracao-de-vendecor #voltar").onclick = function () {
+                    window.location.href = "/jogos"
+                }
+                vencedor = idJogador
             })
         }
         
@@ -189,8 +198,18 @@
 
                 lastState = play
 
-                if (lastState.vencedor) {
+   
+
+                renderizarCartasDoOponente(play.contagemDeCartasNaMaoDoOpenente)
+                renderizaCartasDoJogador(play.cartasNaMao)
+                renderizaCartasDaPilha(play.pilha)
+
+                if (lastState.vencedor && !vencedor) {
                     declaraVencedor(lastState.vencedor)
+                    return
+                }
+            
+                if (vencedor) {
                     return
                 }
 
@@ -205,9 +224,6 @@
                     timerNoHtml.classList.remove("mostrar")
                 }
 
-                renderizarCartasDoOponente(play.contagemDeCartasNaMaoDoOpenente)
-                renderizaCartasDoJogador(play.cartasNaMao)
-                renderizaCartasDaPilha(play.pilha)
             }).catch(err => {
                 console.error(err)
                 createErrorOverlay("Este jogo está com problemas", "/jogos")
